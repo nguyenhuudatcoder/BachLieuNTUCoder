@@ -1,60 +1,58 @@
-/// Kiên is reliable!!!
 /// Made by Nguyễn Hữu Đạt
 #include <bits/stdc++.h>
-// #define int long long
+#define ll long long
 #define kien main
-#define mod 1000000007
 using namespace std;
-int n;
-long a[1000005];
-map<long, int> pos;
-map<long, int> ma;
-map<long, int> dem;
-int ans=1e7;
-void rannum()
+const ll inf = LLONG_MAX;
+const ll mod = 1e9 + 7;
+int n, ans;
+int a[100005];
+unordered_map<int, int> dem;
+bool rannum(int pos)
 {
-    for (int i = 1; i <= n; i++)
+    int tam = 0;
+    for (int i = 0; i < n; i += pos)
     {
-        if (pos[a[i]] == 0)
+        tam++;
+        for (int j = i; j < min(n, i + pos); j++)
+            if (dem[a[j]] ==tam-1)
+                dem[a[j]]++;
+    }
+    for(auto i:dem)
+        if(i.second==tam) return 1;
+    return 0;
+}
+void ChatGPT()
+{
+    int l = 0, r = n;
+    while (l <= r)
+    {
+        int m = (l + r) / 2;
+        if (rannum(m))
         {
-            if (dem[a[i]] == 1)
-            {
-                ma[a[i]] = max(i, n - i + 1);
-                pos[a[i]] = i;
-            }
-            else
-            {
-                ma[a[i]] = i;
-                pos[a[i]] = i;
-            }
+            ans = m;
+            r = m - 1;
         }
         else
-        {
-            ma[a[i]] = max(ma[a[i]], i - pos[a[i]]);
-            pos[a[i]] = i;
-        }
+            l = m + 1;
+        dem.clear();
     }
-    for (auto i : ma)
-    {
-        ans = min(ans, i.second);
-    }
-    cout << ans;
 }
 kien()
 {
     // if(fopen(".inp","r"))
     // {
-    //     freopen(".inp","r",stdin);
-    //     freopen(".out","w",stdout);
+    // 	freopen(".inp","r",stdin);
+    // 	freopen(".out","w",stdout);
     // }
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
     cin >> n;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
         cin >> a[i];
-        dem[a[i]]++;
     }
-    rannum();
+    ChatGPT();
+    cout << ans;
 }
