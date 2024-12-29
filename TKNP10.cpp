@@ -5,38 +5,25 @@
 using namespace std;
 const ll inf = LLONG_MAX;
 const ll mod = 1e9 + 7;
-int n, ans;
-int a[100005];
-unordered_map<int, int> dem;
-bool rannum(int pos)
-{
-    int tam = 0;
-    for (int i = 0; i < n; i += pos)
-    {
-        tam++;
-        for (int j = i; j < min(n, i + pos); j++)
-            if (dem[a[j]] ==tam-1)
-                dem[a[j]]++;
-    }
-    for(auto i:dem)
-        if(i.second==tam) return 1;
-    return 0;
-}
+int n, ans = 100000005;
+int a[1000005];
+int res[200005], pos[200005];
 void ChatGPT()
 {
-    int l = 0, r = n;
-    while (l <= r)
+    for (int i = 1; i <= n; i++)
     {
-        int m = (l + r) / 2;
-        if (rannum(m))
-        {
-            ans = m;
-            r = m - 1;
-        }
+        if (pos[a[i]] == 0)
+            res[a[i]] = i - pos[a[i]] + 1;
         else
-            l = m + 1;
-        dem.clear();
+            res[a[i]] = max(res[a[i]], i - pos[a[i]]);
+        pos[a[i]] = i;
     }
+    for (int j = -100000; j <= 100000; j++)
+        if (pos[j] > 0)
+            res[j] = max(res[j], n - pos[j] + 1);
+    for (int i = -100000; i <= 100000; i++)
+        if (res[i] > 0)
+            ans = min(ans, res[i]);
 }
 kien()
 {
@@ -49,7 +36,8 @@ kien()
     cin.tie(0);
     cout.tie(0);
     cin >> n;
-    for (int i = 0; i < n; i++)
+    // cout<<pos[-1000];
+    for (int i = 1; i <= n; i++)
     {
         cin >> a[i];
     }
