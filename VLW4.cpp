@@ -5,7 +5,17 @@
 using namespace std;
 const ll inf=LLONG_MAX;
 const ll mod=1e9+7;
-double a;int x;
+int n;
+ll x;
+int tcs(ll n)
+{
+    int s=0;
+    while(n>0)
+    {
+        s+=n%10;
+        n/=10;
+    }return s;
+}
 kien()
 {
     // if(fopen(".inp","r"))
@@ -16,7 +26,10 @@ kien()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin>>a>>x;
-    a=1.0*(pow(a,x));
-    cout<<fixed<<setprecision(2)<<a;
+    cin>>n;
+    while(n--)
+    {
+        cin>>x;
+        cout<<bool(x%tcs(x)==0)<<"\n";
+    }
 }

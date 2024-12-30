@@ -5,7 +5,8 @@
 using namespace std;
 const ll inf=LLONG_MAX;
 const ll mod=1e9+7;
-double a;int x;
+int n;
+ll f[100];
 kien()
 {
     // if(fopen(".inp","r"))
@@ -16,7 +17,8 @@ kien()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin>>a>>x;
-    a=1.0*(pow(a,x));
-    cout<<fixed<<setprecision(2)<<a;
+    cin>>n;
+    f[1]=1;f[2]=1;
+    for(int i=3;i<=n;i++) f[i]=f[i-1]+f[i-2];
+    cout<<f[n];
 }
