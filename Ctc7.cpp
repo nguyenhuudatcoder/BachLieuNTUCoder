@@ -5,41 +5,28 @@
 using namespace std;
 const ll inf = LLONG_MAX;
 const ll mod = 1e9 + 7;
-int t;
-ll n;
-vector<ll> prime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37};
-ll tich(ll a, ll b, ll c)
+int n;
+vector<int> prime = {2, 3, 5, 7, 11, 13, 17};
+int luythua(int a, int b, int c)
 {
-    ll res = 0;
+    int res = 1;
     while (b > 0)
     {
         if (b & 1)
-            res = (res + a) % c;
-        a = 2 * a % c;
+            res = 1ll * res * a % c;
+        a = 1ll * a * a % c;
         b /= 2;
     }
     return res;
 }
-ll luythua(ll a, ll b, ll c)
+bool test(int a, int m, int k, int n)
 {
-    ll res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = tich(res, a, c);
-        a = tich(a, a, c);
-        b /= 2;
-    }
-    return res;
-}
-bool test(ll a, ll m, ll k, ll n)
-{
-    ll res = luythua(a, m, n);
+    int res = luythua(a, m, n);
     if (res == 1 || res == n - 1)
         return 1;
-    for (ll i = 1; i < k; i++)
+    for (int i = 1; i < k; i++)
     {
-        res = tich(res, res, n);
+        res = 1ll * res * res % n;
         if (res == n - 1)
             return 1;
         if (res == 1)
@@ -47,14 +34,14 @@ bool test(ll a, ll m, ll k, ll n)
     }
     return 0;
 }
-bool MillerRabin(ll n)
+bool MillerRabin(int n)
 {
     for (auto a : prime)
         if (n == a)
             return 1;
-    if (n < 41)
+    if (n < 17)
         return 0;
-    ll m = n - 1, k = 0;
+    int m = n - 1, k = 0;
     while (m % 2 == 0)
     {
         k++;
@@ -75,13 +62,11 @@ kien()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    cin >> t;
-    while (t--)
-    {
-        cin >> n;
-        if (MillerRabin(n))
-            cout << "YES\n";
-        else
-            cout << "NO\n";
-    }
+    cin >> n;
+    for (int i = n;; i--)
+        if (MillerRabin(i))
+        {
+            cout << i;
+            exit(0);
+        }
 }
