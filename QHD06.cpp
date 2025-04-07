@@ -1,29 +1,24 @@
-/// Kiên is reliable!!!
 /// Made by Nguyễn Hữu Đạt
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <climits>
+#include<cmath>
+#include<algorithm>
 #define ll long long
 #define kien main
 using namespace std;
 const ll inf = LLONG_MAX;
 const ll mod = 1e9 + 7;
-string x, y;
-string ans;
-vector<int> a, b;
-string Max(string a, string b, string c)
+string a, b;
+string lcs[1005][1005];
+string get(string a, string b)
 {
-    if (a.size() > b.size() && a.size() > c.size())
+    if (a.size() > b.size())
         return a;
-    if (b.size() > a.size() && b.size() > c.size())
+    else if (b.size() > a.size())
         return b;
-    if (c.size() > a.size() && c.size() > b.size())
-        return c;
-    if (a.size() == b.size() && a.size() > c.size())
-        return (a > b) ? a : b;
-    if (a.size() == c.size() && a.size() > b.size())
-        return (a > c) ? a : c;
-    if (b.size() == c.size() && b.size() > a.size())
-        return (b > c) ? b : c;
-    return max({a, b, c});
+    else
+        return max(a,b);
 }
 kien()
 {
@@ -32,53 +27,35 @@ kien()
     // 	freopen(".inp","r",stdin);
     // 	freopen(".out","w",stdout);
     // }
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    cin >> x;
-    cin >> y;
-    string lcs[x.size() + 5][y.size() + 5];
-    x = ' ' + x;
-    y = ' ' + y;
-    // lcs[0][0]=y;
-    // cout<<lcs[0][0];
-    for (int i = 1; i < x.size(); i++)
-        for (int j = 1; j < y.size(); j++)
-            if (x[i] == y[j])
-            {
-                lcs[i][j] = Max(lcs[i - 1][j], lcs[i][j - 1], lcs[i - 1][j - 1] + y[j]);
-            }
-            else
-                lcs[i][j] = Max(lcs[i - 1][j], lcs[i][j - 1], lcs[i - 1][j - 1]);
-    ans = lcs[x.size() - 1][y.size() - 1];
-    if (ans.empty() == 0)
+    cin.tie(0)->sync_with_stdio(0);
+    cin >> a;
+    cin >> b;
+    for (int i = 1; i <= a.size(); i++)
     {
-        cout << ans << "\n";
-        int l = x.size() - 1, r = ans.size() - 1;
-        while (l > 0 && r >= 0)
+        for (int j = 1; j <= b.size(); j++)
         {
-            if (x[l] == ans[r])
-            {
-                a.push_back(l);
-                r--;
-            }
-            l--;
+            lcs[i][j]=get(lcs[i][j-1],lcs[i-1][j]);
+            if (a[i - 1] == b[j - 1])
+                lcs[i][j] =get(lcs[i][j], lcs[i - 1][j - 1] + a[i - 1]);
+            // cout<<lcs[i][j]<<'-';
         }
-        l = y.size() - 1, r = ans.size() - 1;
-        while (l > 0 && r >= 0)
-        {
-            if (y[l] == ans[r])
-            {
-                b.push_back(l);
-                r--;
-            }
-            l--;
-        }
-        for (int i = a.size() - 1; i >= 0; i--)
-            cout << a[i] << " ";
-        cout << "\n";
-        for (int i = b.size() - 1; i >= 0; i--)
-            cout << b[i] << " ";
+        // cout<<'\n';
     }
-    else cout<<"";
+    // cout<<a<<' '<<b;
+    cout << lcs[a.size()][b.size()]<<'\n';
+    int j = 0;
+    for (int i = 0; i < a.size(); i++)
+        if (a[i] == lcs[a.size()][b.size()][j])
+        {
+            cout << i + 1 << ' ';
+            j++;
+        }
+    cout<<'\n';
+    j = 0;
+    for (int i = 0; i < b.size(); i++)
+        if (b[i] == lcs[a.size()][b.size()][j])
+        {
+            cout << i + 1 << ' ';
+            j++;
+        }
 }
